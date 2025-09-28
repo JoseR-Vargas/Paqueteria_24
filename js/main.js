@@ -266,8 +266,8 @@ function animateNumbers() {
     
     statNumbers.forEach(stat => {
         const target = parseInt(stat.getAttribute('data-target'));
-        const duration = 2000; // 2 segundos
-        const increment = target / (duration / 16); // 60fps
+        const duration = 500; // 0.5 segundos
+        const increment = target / (duration / 4); // fps
         let current = 0;
         
         const timer = setInterval(() => {
