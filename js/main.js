@@ -302,7 +302,7 @@ const observer = new IntersectionObserver((entries) => {
 
 // Observar secciones para animaciones
 document.addEventListener('DOMContentLoaded', () => {
-    const sectionsToAnimate = document.querySelectorAll('.stats-section, .process-section, .benefits-section, .integrations-section, .service-card, .benefit-item');
+    const sectionsToAnimate = document.querySelectorAll('.about-section, .values-section, .stats-section, .process-section, .benefits-section, .phrases-section, .integrations-section, .service-card, .benefit-item');
     
     sectionsToAnimate.forEach(section => {
         observer.observe(section);
@@ -310,7 +310,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Animación de entrada para elementos
-const animateElements = document.querySelectorAll('.service-card, .benefit-item, .process-item, .stat-item, .integration-item');
+const animateElements = document.querySelectorAll('.service-card, .benefit-item, .process-item, .stat-item, .integration-item, .about-card, .value-item, .phrase-item');
 
 animateElements.forEach((element, index) => {
     element.style.opacity = '0';
@@ -333,3 +333,30 @@ function animateOnScroll() {
 
 window.addEventListener('scroll', animateOnScroll);
 window.addEventListener('load', animateOnScroll);
+
+// Optimización de imágenes para valores
+document.addEventListener('DOMContentLoaded', () => {
+    const valueImages = document.querySelectorAll('.value-item img');
+    
+    valueImages.forEach(img => {
+        // Agregar loading lazy para mejor performance
+        img.loading = 'lazy';
+        
+        // Agregar error handling
+        img.addEventListener('error', () => {
+            console.warn(`Error cargando imagen: ${img.src}`);
+            // Fallback a emoji si la imagen falla
+            const parent = img.parentElement;
+            const fallbackEmojis = ['🚚', '📦', '🤝', '⚡', '💡'];
+            const index = Array.from(parent.parentElement.children).indexOf(parent);
+            if (fallbackEmojis[index]) {
+                img.style.display = 'none';
+                const emojiSpan = document.createElement('span');
+                emojiSpan.textContent = fallbackEmojis[index];
+                emojiSpan.style.fontSize = '3rem';
+                emojiSpan.style.marginBottom = '1rem';
+                parent.insertBefore(emojiSpan, img);
+            }
+        });
+    });
+});
