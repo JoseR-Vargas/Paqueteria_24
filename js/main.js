@@ -260,103 +260,139 @@ window.addEventListener('scroll', () => {
     }
 });
 
-// Animación de números en estadísticas
+// Animación de números en estadísticas (optimizada)
 function animateNumbers() {
     const statNumbers = document.querySelectorAll('.stat-number');
     
     statNumbers.forEach(stat => {
         const target = parseInt(stat.getAttribute('data-target'));
-        const duration = 500; // 0.5 segundos
-        const increment = target / (duration / 4); // fps
-        let current = 0;
+        const duration = 2000; // 2 segundos
+        const startTime = performance.now();
         
-        const timer = setInterval(() => {
-            current += increment;
-            if (current >= target) {
-                current = target;
-                clearInterval(timer);
+        function updateNumber(currentTime) {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const current = Math.floor(target * progress);
+            
+            stat.textContent = current;
+            
+            if (progress < 1) {
+                requestAnimationFrame(updateNumber);
             }
-            stat.textContent = Math.floor(current);
-        }, 16);
+        }
+        
+        requestAnimationFrame(updateNumber);
     });
 }
 
-// Intersection Observer para animaciones
+// Intersection Observer optimizado
+let hasAnimatedNumbers = false;
+
 const observerOptions = {
-    threshold: 0.5,
-    rootMargin: '0px 0px -50px 0px'
+    threshold: 0.3,
+    rootMargin: '0px 0px -100px 0px'
 };
 
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
-            if (entry.target.classList.contains('stats-section')) {
+            // Solo animar números una vez
+            if (entry.target.classList.contains('stats-section') && !hasAnimatedNumbers) {
+                hasAnimatedNumbers = true;
                 animateNumbers();
             }
             
             // Agregar clase de animación a elementos
             entry.target.classList.add('animate-in');
+            
+            // Dejar de observar elementos ya animados
+            observer.unobserve(entry.target);
         }
     });
 }, observerOptions);
 
-// Observar secciones para animaciones
+// Observar secciones para animaciones (optimizado)
 document.addEventListener('DOMContentLoaded', () => {
-    const sectionsToAnimate = document.querySelectorAll('.about-section, .values-section, .stats-section, .process-section, .benefits-section, .phrases-section, .integrations-section, .service-card, .benefit-item');
-    
-    sectionsToAnimate.forEach(section => {
-        observer.observe(section);
-    });
+    // Delay inicial para mejorar performance
+    setTimeout(() => {
+        const sectionsToAnimate = document.querySelectorAll('.about-section, .values-section, .stats-section, .process-section, .benefits-section, .phrases-section, .integrations-section');
+        
+        sectionsToAnimate.forEach(section => {
+            observer.observe(section);
+        });
+    }, 100);
 });
 
-// Animación de entrada para elementos
+// Animación de entrada optimizada con throttling
+let isAnimating = false;
 const animateElements = document.querySelectorAll('.service-card, .benefit-item, .process-item, .stat-item, .integration-item, .about-card, .value-item, .phrase-item');
 
+// Configurar elementos iniciales
 animateElements.forEach((element, index) => {
     element.style.opacity = '0';
     element.style.transform = 'translateY(30px)';
-    element.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
+    element.style.transition = `opacity 0.6s ease ${index * 0.05}s, transform 0.6s ease ${index * 0.05}s`;
 });
 
-// Función para animar elementos cuando entran en viewport
+// Función optimizada para animar elementos
 function animateOnScroll() {
-    animateElements.forEach(element => {
-        const elementTop = element.getBoundingClientRect().top;
-        const elementVisible = 150;
-        
-        if (elementTop < window.innerHeight - elementVisible) {
-            element.style.opacity = '1';
-            element.style.transform = 'translateY(0)';
-        }
+    if (isAnimating) return;
+    
+    isAnimating = true;
+    requestAnimationFrame(() => {
+        animateElements.forEach(element => {
+            if (element.style.opacity === '0') {
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 100;
+                
+                if (elementTop < window.innerHeight - elementVisible) {
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }
+            }
+        });
+        isAnimating = false;
     });
 }
 
-window.addEventListener('scroll', animateOnScroll);
+// Throttled scroll listener
+let scrollTimeout;
+window.addEventListener('scroll', () => {
+    if (scrollTimeout) {
+        clearTimeout(scrollTimeout);
+    }
+    scrollTimeout = setTimeout(animateOnScroll, 16);
+});
+
 window.addEventListener('load', animateOnScroll);
 
-// Optimización de imágenes para valores
+// Optimización de imágenes con lazy loading mejorado
 document.addEventListener('DOMContentLoaded', () => {
-    const valueImages = document.querySelectorAll('.value-item img');
-    
-    valueImages.forEach(img => {
-        // Agregar loading lazy para mejor performance
-        img.loading = 'lazy';
+    // Delay para mejorar performance inicial
+    setTimeout(() => {
+        const valueImages = document.querySelectorAll('.value-item img');
         
-        // Agregar error handling
-        img.addEventListener('error', () => {
-            console.warn(`Error cargando imagen: ${img.src}`);
-            // Fallback a emoji si la imagen falla
-            const parent = img.parentElement;
-            const fallbackEmojis = ['🚚', '📦', '🤝', '⚡', '💡'];
-            const index = Array.from(parent.parentElement.children).indexOf(parent);
-            if (fallbackEmojis[index]) {
-                img.style.display = 'none';
-                const emojiSpan = document.createElement('span');
-                emojiSpan.textContent = fallbackEmojis[index];
-                emojiSpan.style.fontSize = '3rem';
-                emojiSpan.style.marginBottom = '1rem';
-                parent.insertBefore(emojiSpan, img);
-            }
+        valueImages.forEach(img => {
+            // Agregar loading lazy para mejor performance
+            img.loading = 'lazy';
+            img.decoding = 'async';
+            
+            // Agregar error handling optimizado
+            img.addEventListener('error', () => {
+                console.warn(`Error cargando imagen: ${img.src}`);
+                // Fallback a emoji si la imagen falla
+                const parent = img.parentElement;
+                const fallbackEmojis = ['🚚', '📦', '🤝', '⚡', '💡'];
+                const index = Array.from(parent.parentElement.children).indexOf(parent);
+                if (fallbackEmojis[index]) {
+                    img.style.display = 'none';
+                    const emojiSpan = document.createElement('span');
+                    emojiSpan.textContent = fallbackEmojis[index];
+                    emojiSpan.style.fontSize = '3rem';
+                    emojiSpan.style.marginBottom = '1rem';
+                    parent.insertBefore(emojiSpan, img);
+                }
+            });
         });
-    });
+    }, 200);
 });
