@@ -171,16 +171,23 @@ body {
     background: var(--color-blanco);
 }
 
-.about-grid {
+.about-content-wrapper {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-    gap: 3rem;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
     margin-top: 3rem;
+    align-items: center;
+}
+
+.about-left {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
 }
 
 .about-card {
     background: var(--color-blanco);
-    padding: 3rem;
+    padding: 2.5rem;
     border-radius: 20px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.1);
     text-align: center;
@@ -210,6 +217,154 @@ body {
     color: var(--color-ciruleo);
     line-height: 1.8;
     font-size: 1.1rem;
+}
+
+/* Brand Profile Section */
+.brand-profile {
+    background: linear-gradient(135deg, var(--color-hoja-agua), var(--color-turquesa));
+    padding: 2rem;
+    border-radius: 15px;
+    margin-bottom: 2rem;
+    box-shadow: 0 5px 20px rgba(91, 227, 228, 0.3);
+    border-left: 5px solid var(--color-ciruleo);
+    animation: fadeInScale 0.8s ease-out;
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.brand-profile-title {
+    font-family: var(--font-logo);
+    font-size: 2rem;
+    color: var(--color-azul-golfo);
+    margin-bottom: 1rem;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.brand-profile-text {
+    color: var(--color-azul-golfo);
+    line-height: 1.8;
+    font-size: 1rem;
+    font-weight: 500;
+    text-align: justify;
+    margin: 0;
+}
+
+/* Hero Banner Right Side */
+.about-right {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hero-banner-container {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+.hero-banner-img {
+    width: 100%;
+    height: auto;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(4, 123, 164, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hero-banner-img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 25px 80px rgba(4, 123, 164, 0.4);
+}
+
+.brand-phrases {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 450px;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    pointer-events: none;
+}
+
+.brand-phrase {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 1.2rem 1.5rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    border-left: 5px solid var(--color-ciruleo);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    animation: slideIn 1s ease-out;
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s ease;
+}
+
+.brand-phrase:hover {
+    transform: scale(1.05);
+}
+
+.phrase-1 {
+    align-self: flex-start;
+    margin-left: -30px;
+    animation-delay: 0.3s;
+}
+
+.phrase-2 {
+    align-self: flex-end;
+    margin-right: -30px;
+    animation-delay: 0.6s;
+    border-left: 5px solid var(--color-turquesa);
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.brand-phrase p {
+    font-family: var(--font-titulo);
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--color-azul-golfo);
+    margin: 0;
+    line-height: 1.4;
+}
+
+.quote-icon {
+    font-size: 1.8rem;
+    color: var(--color-ciruleo);
+    font-family: Georgia, serif;
+    font-weight: bold;
+    opacity: 0.5;
 }
 
 /* Values Section */
@@ -277,6 +432,64 @@ body {
     color: var(--color-ciruleo);
     line-height: 1.6;
     font-size: 0.95rem;
+}
+
+/* Delivery Highlight Styles */
+.delivery-highlight {
+    grid-column: span 2;
+    padding: 0;
+    overflow: hidden;
+}
+
+.delivery-image-container {
+    width: 100%;
+    height: 100%;
+    min-height: 350px;
+    background-image: url('../img/servicio-entrega.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+    transition: transform 0.3s ease;
+}
+
+.delivery-image-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, rgba(4, 123, 164, 0.2), rgba(4, 4, 83, 0.5));
+    z-index: 1;
+}
+
+.delivery-highlight:hover .delivery-image-container {
+    transform: scale(1.05);
+}
+
+.delivery-highlight:hover {
+    box-shadow: 0 15px 40px rgba(4, 123, 164, 0.4);
+}
+
+/* Frases fuera del div de imagen */
+.delivery-phrases-outside {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 2rem;
+    text-align: center;
+}
+
+.delivery-phrase-text {
+    font-family: var(--font-titulo);
+    font-size: 1.3rem;
+    font-weight: 600;
+    font-style: italic;
+    color: var(--color-azul-golfo);
+    line-height: 1.6;
+    margin: 0;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
 }
 
 /* Brand Phrases Section */
@@ -844,6 +1057,51 @@ body {
     text-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
+/* Media Queries para pantallas grandes */
+@media (min-width: 1200px) {
+    .brand-phrases {
+        width: 85%;
+        max-width: 420px;
+        gap: 3.5rem;
+    }
+
+    .brand-phrase {
+        padding: 1.3rem 1.8rem;
+    }
+
+    .phrase-1 {
+        margin-left: -40px;
+    }
+
+    .phrase-2 {
+        margin-right: -40px;
+    }
+
+    .brand-phrase p {
+        font-size: 1rem;
+    }
+
+    .quote-icon {
+        font-size: 2rem;
+    }
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+    .brand-phrases {
+        width: 88%;
+        max-width: 400px;
+        gap: 2.5rem;
+    }
+
+    .phrase-1 {
+        margin-left: -25px;
+    }
+
+    .phrase-2 {
+        margin-right: -25px;
+    }
+}
+
 /* Responsive Design - Mobile First (70% enfoque) */
 @media (max-width: 768px) {
     .nav-menu {
@@ -897,6 +1155,48 @@ body {
         max-width: 300px;
     }
 
+    /* About Section Responsive */
+    .about-content-wrapper {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+    }
+
+    .about-right {
+        order: -1;
+    }
+
+    .hero-banner-container {
+        max-width: 100%;
+    }
+
+    .brand-phrase {
+        padding: 1rem 1.5rem;
+    }
+
+    .phrase-1 {
+        margin-left: 0;
+    }
+
+    .phrase-2 {
+        margin-right: 0;
+    }
+
+    .brand-phrase p {
+        font-size: 0.9rem;
+    }
+
+    .brand-profile {
+        padding: 1.5rem;
+    }
+
+    .brand-profile-title {
+        font-size: 1.6rem;
+    }
+
+    .brand-profile-text {
+        font-size: 0.95rem;
+    }
+
     .services-grid {
         grid-template-columns: 1fr;
         gap: 1.5rem;
@@ -919,6 +1219,19 @@ body {
 
     .social-links {
         align-items: center;
+    }
+    
+    .delivery-highlight {
+        grid-column: span 1;
+        padding: 0;
+    }
+    
+    .delivery-image-container {
+        min-height: 300px;
+    }
+    
+    .delivery-phrase-text {
+        font-size: 1.1rem;
     }
 }
 
@@ -972,6 +1285,41 @@ body {
     
     .stat-number {
         font-size: 2.5rem;
+    }
+
+    /* About Section Mobile */
+    .brand-phrases {
+        position: relative;
+        top: auto;
+        left: auto;
+        transform: none;
+        margin-top: 2rem;
+        gap: 1rem;
+    }
+
+    .brand-phrase {
+        padding: 1rem;
+    }
+
+    .brand-phrase p {
+        font-size: 0.85rem;
+    }
+
+    .quote-icon {
+        font-size: 1.5rem;
+    }
+
+    .brand-profile {
+        padding: 1.2rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .brand-profile-title {
+        font-size: 1.4rem;
+    }
+
+    .brand-profile-text {
+        font-size: 0.9rem;
     }
     
     .stats-section .section-title {
@@ -1038,6 +1386,24 @@ body {
     .value-item img {
         width: 50px;
         height: 50px;
+    }
+    
+    .delivery-highlight {
+        grid-column: span 1;
+        padding: 0;
+    }
+    
+    .delivery-image-container {
+        min-height: 250px;
+    }
+    
+    .delivery-phrase-text {
+        font-size: 1rem;
+    }
+    
+    .delivery-phrases-outside {
+        gap: 1rem;
+        margin-top: 1.5rem;
     }
     
     .phrases-grid {
