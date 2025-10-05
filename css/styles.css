@@ -167,8 +167,36 @@ body {
 
 /* About Us Section */
 .about-section {
-    padding: 80px 0;
+    padding: 0;
     background: var(--color-blanco);
+    position: relative;
+}
+
+.about-background {
+    width: 100%;
+    min-height: 500px;
+    background-image: url('../img/quienes somos.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 80px 0;
+    position: relative;
+}
+
+.about-background::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.85);
+    z-index: 1;
+}
+
+.about-section .container {
+    position: relative;
+    z-index: 2;
 }
 
 /* Mission and Vision - Texto Plano */
