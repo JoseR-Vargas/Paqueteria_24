@@ -1489,3 +1489,302 @@ body {
 html {
     scroll-behavior: smooth;
 }
+
+/* ===================================
+   DASHBOARD STYLES
+   =================================== */
+
+/* Dashboard Section */
+.dashboard-section {
+    padding: 120px 0 80px;
+    background: linear-gradient(135deg, var(--color-hoja-agua), var(--color-turquesa));
+    min-height: 100vh;
+}
+
+.dashboard-title {
+    font-family: var(--font-logo);
+    font-size: 2.5rem;
+    color: var(--color-azul-golfo);
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.dashboard-subtitle {
+    text-align: center;
+    color: var(--color-ciruleo);
+    margin-bottom: 3rem;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+/* Logout Button */
+.btn-logout {
+    background: linear-gradient(135deg, var(--color-turquesa), var(--color-hoja-agua));
+    color: var(--color-azul-golfo);
+    border: none;
+    padding: 10px 25px;
+    border-radius: 25px;
+    font-family: var(--font-titulo);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+}
+
+.btn-logout:hover {
+    background: linear-gradient(135deg, var(--color-hoja-agua), var(--color-turquesa));
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(91, 227, 228, 0.3);
+}
+
+/* Clear Data Button */
+.btn-clear-data {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    color: var(--color-blanco);
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-family: var(--font-titulo);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+    white-space: nowrap;
+}
+
+.btn-clear-data:hover {
+    background: linear-gradient(135deg, #c0392b, #e74c3c);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+}
+
+/* Dashboard Controls */
+.dashboard-controls {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+/* Stats Counter */
+.stats-counter {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.counter-item {
+    background: var(--color-blanco);
+    padding: 1.5rem 2.5rem;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    text-align: center;
+    min-width: 180px;
+}
+
+.counter-number {
+    display: block;
+    font-family: var(--font-titulo);
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--color-ciruleo);
+    margin-bottom: 0.5rem;
+}
+
+.counter-label {
+    display: block;
+    font-size: 0.9rem;
+    color: var(--color-azul-golfo);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.search-input,
+.filter-select {
+    padding: 12px 15px;
+    border: 2px solid var(--color-blanco);
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: var(--font-cuerpo);
+    background: var(--color-blanco);
+    color: var(--color-azul-golfo);
+    transition: border-color 0.3s ease;
+}
+
+.search-input {
+    flex: 1;
+    min-width: 250px;
+}
+
+.filter-select {
+    min-width: 200px;
+}
+
+.search-input:focus,
+.filter-select:focus {
+    outline: none;
+    border-color: var(--color-ciruleo);
+}
+
+/* Dashboard Table */
+.dashboard-table-wrapper {
+    background: var(--color-blanco);
+    border-radius: 15px;
+    padding: 1.5rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    overflow-x: auto;
+}
+
+.dashboard-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+.dashboard-table thead {
+    background: linear-gradient(135deg, var(--color-ciruleo), var(--color-azul-golfo));
+}
+
+.dashboard-table th {
+    padding: 1rem;
+    text-align: left;
+    font-family: var(--font-titulo);
+    font-weight: 600;
+    color: var(--color-blanco);
+    white-space: nowrap;
+}
+
+.dashboard-table tbody tr {
+    border-bottom: 1px solid var(--color-hoja-agua);
+    transition: background-color 0.3s ease;
+}
+
+.dashboard-table tbody tr:hover {
+    background-color: var(--color-hoja-agua);
+}
+
+.dashboard-table td {
+    padding: 1rem;
+    color: var(--color-azul-golfo);
+    vertical-align: top;
+}
+
+.dashboard-table td:last-child {
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Badges for package types */
+.badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 15px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin: 2px;
+    white-space: nowrap;
+}
+
+.badge-mercado-libre {
+    background: #FFE600;
+    color: #333;
+}
+
+.badge-ecommerce {
+    background: var(--color-ciruleo);
+    color: var(--color-blanco);
+}
+
+.badge-privado {
+    background: var(--color-turquesa);
+    color: var(--color-azul-golfo);
+}
+
+/* No data message */
+.no-data-message {
+    display: none;
+    text-align: center;
+    padding: 3rem;
+    background: var(--color-blanco);
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.no-data-message.show {
+    display: block;
+}
+
+.no-data-message p {
+    font-size: 1.2rem;
+    color: var(--color-ciruleo);
+    font-weight: 500;
+}
+
+/* Responsive Dashboard */
+@media (max-width: 768px) {
+    .dashboard-title {
+        font-size: 2rem;
+    }
+
+    .dashboard-controls {
+        flex-direction: column;
+    }
+
+    .search-input,
+    .filter-select,
+    .btn-clear-data {
+        width: 100%;
+    }
+
+    .stats-counter {
+        gap: 1rem;
+    }
+
+    .counter-item {
+        padding: 1rem 1.5rem;
+        min-width: 140px;
+    }
+
+    .counter-number {
+        font-size: 2rem;
+    }
+
+    .counter-label {
+        font-size: 0.8rem;
+    }
+
+    .dashboard-table-wrapper {
+        padding: 1rem;
+    }
+
+    .dashboard-table {
+        font-size: 0.85rem;
+    }
+
+    .dashboard-table th,
+    .dashboard-table td {
+        padding: 0.75rem 0.5rem;
+    }
+    
+    .dashboard-table td:last-child {
+        max-width: 150px;
+    }
+}
+
+@media (max-width: 480px) {
+    .dashboard-section {
+        padding: 100px 0 60px;
+    }
+
+    .dashboard-title {
+        font-size: 1.7rem;
+    }
+
+    .dashboard-subtitle {
+        font-size: 1rem;
+    }
+}

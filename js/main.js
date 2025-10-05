@@ -50,7 +50,8 @@ contactForm.addEventListener('submit', (e) => {
         telefono: formData.get('telefono').trim(),
         email: formData.get('email').trim(),
         comentario: formData.get('comentario').trim(),
-        paqueteria: paqueteriaSeleccionada
+        paqueteria: paqueteriaSeleccionada,
+        fecha: new Date().toISOString()
     };
     
     // Validaciones
@@ -89,12 +90,22 @@ contactForm.addEventListener('submit', (e) => {
         return;
     }
     
+    // Guardar en localStorage
+    saveContact(data);
+    
     // Si todo está bien, mostrar mensaje de éxito
     showSuccess('¡Formulario enviado correctamente! Nos pondremos en contacto contigo pronto.');
     contactForm.reset();
     charCount.textContent = '0';
     charCount.style.color = '#047BA4';
 });
+
+// Función para guardar contacto en localStorage (DRY)
+function saveContact(data) {
+    const contacts = JSON.parse(localStorage.getItem('paqueteria24_contacts') || '[]');
+    contacts.push(data);
+    localStorage.setItem('paqueteria24_contacts', JSON.stringify(contacts));
+}
 
 // Función para validar email
 function isValidEmail(email) {

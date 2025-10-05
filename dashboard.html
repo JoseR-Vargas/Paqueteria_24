@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Dashboard - Paquetería24</title>
+    <link rel="icon" type="image/png" href="./img/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Lobster&family=Montserrat:wght@400;600;700&family=Muli:wght@300;400;500;600&family=Poppins:wght@300;400;500;600&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lobster&family=Montserrat:wght@400;600;700&family=Muli:wght@300;400;500;600&family=Poppins:wght@300;400;500;600&display=swap"></noscript>
+    <link rel="stylesheet" href="./css/styles.css?v=1.1">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span class="logo-text">Paquetería24</span>
+            </div>
+
+            <div class="nav-menu" id="nav-menu">
+                <button class="btn-logout" id="btn-logout">Cerrar Sesión</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Dashboard Section -->
+    <main class="dashboard-section">
+        <div class="container">
+            <h1 class="dashboard-title">Panel de Administración</h1>
+            <p class="dashboard-subtitle">Consultas recibidas del formulario de contacto</p>
+
+            <!-- Contador de registros -->
+            <div class="stats-counter">
+                <div class="counter-item">
+                    <span class="counter-number" id="total-count">0</span>
+                    <span class="counter-label">Total de Consultas</span>
+                </div>
+
+            </div>
+
+            <!-- Filtros y búsqueda -->
+            <div class="dashboard-controls">
+                <input type="text" id="search-input" class="search-input" placeholder="Buscar por nombre, cédula o email...">
+                <select id="filter-type" class="filter-select">
+                    <option value="all">Todos los tipos</option>
+                    <option value="mercado-libre">Mercado Libre</option>
+                    <option value="ecommerce">E-commerce</option>
+                    <option value="privado">Privado</option>
+                </select>
+
+            </div>
+
+            <!-- Tabla de datos -->
+            <div class="dashboard-table-wrapper">
+                <table class="dashboard-table" id="contacts-table">
+                    <thead>
+                        <tr>
+                            <th>Nombre/Empresa</th>
+                            <th>Cédula/RUT</th>
+                            <th>Teléfono</th>
+                            <th>Email</th>
+                            <th>Tipo de Paquetería</th>
+                            <th>Comentario</th>
+                            <th>Fecha</th>
+                        </tr>
+                    </thead>
+                    <tbody id="contacts-tbody">
+                        <!-- Los datos se cargarán dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Mensaje cuando no hay datos -->
+            <div class="no-data-message" id="no-data-message">
+                <p>No hay consultas registradas aún.</p>
+            </div>
+        </div>
+    </main>
+
+    <script src="./js/dashboard.js" defer></script>
+</body>
+
+</html>
