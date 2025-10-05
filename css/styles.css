@@ -171,105 +171,74 @@ body {
     background: var(--color-blanco);
 }
 
-.about-content-wrapper {
+/* Mission and Vision - Texto Plano */
+.mission-vision-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 4rem;
-    margin-top: 3rem;
-    align-items: center;
+    gap: 3rem;
+    max-width: 1000px;
+    margin: 3rem auto 3rem;
+    padding: 0 1rem;
 }
 
-.about-left {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-}
-
-.about-card {
-    background: var(--color-blanco);
-    padding: 2.5rem;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+.mission-vision-item {
     text-align: center;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border-top: 4px solid var(--color-turquesa);
 }
 
-.about-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-}
-
-.about-icon {
-    font-size: 4rem;
-    margin-bottom: 1.5rem;
-}
-
-.about-card h3 {
+.mission-vision-title {
     font-family: var(--font-titulo);
-    font-size: 1.8rem;
+    font-size: 1.5rem;
     color: var(--color-azul-golfo);
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
     font-weight: 700;
+    letter-spacing: 1px;
 }
 
-.about-card p {
+.mission-vision-text {
     color: var(--color-ciruleo);
     line-height: 1.8;
-    font-size: 1.1rem;
+    font-size: 1rem;
+    font-weight: 400;
+    margin: 0;
 }
 
-/* Brand Profile Section */
-.brand-profile {
-    background: linear-gradient(135deg, var(--color-hoja-agua), var(--color-turquesa));
-    padding: 2rem;
-    border-radius: 15px;
-    margin-bottom: 2rem;
-    box-shadow: 0 5px 20px rgba(91, 227, 228, 0.3);
-    border-left: 5px solid var(--color-ciruleo);
-    animation: fadeInScale 0.8s ease-out;
+/* Banner Wrapper */
+.about-banner-wrapper {
+    max-width: 600px;
+    margin: 0 auto;
 }
 
-@keyframes fadeInScale {
-    from {
-        opacity: 0;
-        transform: scale(0.95);
-    }
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
+/* Brand Profile Intro - Texto Plano */
+.brand-profile-intro {
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto 3rem;
+    padding: 0 1rem;
 }
 
 .brand-profile-title {
     font-family: var(--font-logo);
-    font-size: 2rem;
+    font-size: 2.5rem;
     color: var(--color-azul-golfo);
-    margin-bottom: 1rem;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 1.5rem;
+    font-weight: 400;
 }
 
 .brand-profile-text {
     color: var(--color-azul-golfo);
-    line-height: 1.8;
-    font-size: 1rem;
-    font-weight: 500;
-    text-align: justify;
+    line-height: 1.9;
+    font-size: 1.1rem;
+    font-weight: 400;
+    text-align: center;
     margin: 0;
 }
 
-/* Hero Banner Right Side */
-.about-right {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
+/* Hero Banner Container */
 .hero-banner-container {
     position: relative;
     width: 100%;
     max-width: 500px;
+    margin: 0 auto;
     animation: float 6s ease-in-out infinite;
 }
 
@@ -375,7 +344,7 @@ body {
 
 .values-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 2rem;
     margin-top: 3rem;
 }
@@ -436,9 +405,11 @@ body {
 
 /* Delivery Highlight Styles */
 .delivery-highlight {
-    grid-column: span 2;
+    grid-column: 2 / 4;
     padding: 0;
     overflow: hidden;
+    display: flex;
+    align-items: center;
 }
 
 .delivery-image-container {
@@ -537,8 +508,36 @@ body {
 
 /* Services Section */
 .services-section {
-    padding: 80px 0;
+    padding: 0;
     background: var(--color-blanco);
+    position: relative;
+}
+
+.services-background {
+    width: 100%;
+    min-height: 500px;
+    background-image: url('../img/services.section.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 80px 0;
+    position: relative;
+}
+
+.services-background::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.85);
+    z-index: 1;
+}
+
+.services-section .container {
+    position: relative;
+    z-index: 2;
 }
 
 /* Stats Section */
@@ -607,62 +606,39 @@ body {
     font-weight: 500;
 }
 
-/* Process Section */
+/* Process Section - Texto Plano */
 .process-section {
     padding: 80px 0;
     background: var(--color-blanco);
 }
 
-.process-grid {
+.process-content-wrapper {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 3rem;
     margin-top: 3rem;
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-.process-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 1.5rem;
-    padding: 2rem;
-    background: var(--color-blanco);
-    border-radius: 15px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border-left: 4px solid var(--color-turquesa);
+.process-text-item {
+    text-align: center;
 }
 
-.process-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-}
-
-.process-number {
-    background: linear-gradient(135deg, var(--color-ciruleo), var(--color-turquesa));
-    color: var(--color-blanco);
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: var(--font-titulo);
-    font-size: 1.5rem;
-    font-weight: 700;
-    flex-shrink: 0;
-}
-
-.process-content h3 {
+.process-title {
     font-family: var(--font-titulo);
     font-size: 1.5rem;
     color: var(--color-azul-golfo);
     margin-bottom: 1rem;
-    font-weight: 600;
+    font-weight: 700;
 }
 
-.process-content p {
+.process-text {
     color: var(--color-ciruleo);
-    line-height: 1.6;
+    line-height: 1.8;
+    font-size: 1rem;
+    margin: 0;
 }
 
 /* Benefits Section */
@@ -715,8 +691,36 @@ body {
 
 /* Integrations Section */
 .integrations-section {
-    padding: 80px 0;
+    padding: 0;
     background: var(--color-blanco);
+    position: relative;
+}
+
+.integrations-background {
+    width: 100%;
+    min-height: 500px;
+    background-image: url('../img/integramos tus plataformas.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 80px 0;
+    position: relative;
+}
+
+.integrations-background::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.85);
+    z-index: 1;
+}
+
+.integrations-section .container {
+    position: relative;
+    z-index: 2;
 }
 
 .integrations-subtitle {
@@ -724,6 +728,7 @@ body {
     color: var(--color-ciruleo);
     margin-bottom: 3rem;
     font-size: 1.1rem;
+    font-weight: 600;
 }
 
 .integrations-grid {
@@ -736,22 +741,48 @@ body {
 .integration-item {
     text-align: center;
     padding: 2rem 1rem;
-    background: var(--color-blanco);
+    background: rgba(255, 255, 255, 0.9);
     border-radius: 15px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     border: 2px solid transparent;
+    backdrop-filter: blur(10px);
 }
 
 .integration-item:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
     border-color: var(--color-turquesa);
+    background: rgba(255, 255, 255, 1);
+}
+
+.integration-item:has(.mercadolibre-img) {
+    padding: 0;
+    overflow: hidden;
+}
+
+.integration-item:has(.paquete-img) {
+    padding: 0;
+    overflow: hidden;
 }
 
 .integration-logo {
     font-size: 3rem;
     margin-bottom: 1rem;
+}
+
+.mercadolibre-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 15px;
+}
+
+.paquete-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 15px;
 }
 
 .integration-name {
@@ -778,19 +809,21 @@ body {
 }
 
 .service-card {
-    background: var(--color-blanco);
+    background: rgba(255, 255, 255, 0.9);
     padding: 2rem;
     border-radius: 15px;
     text-align: center;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     border: 2px solid transparent;
+    backdrop-filter: blur(10px);
 }
 
 .service-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
     border-color: var(--color-turquesa);
+    background: rgba(255, 255, 255, 1);
 }
 
 .service-icon {
@@ -1156,13 +1189,10 @@ body {
     }
 
     /* About Section Responsive */
-    .about-content-wrapper {
+    .mission-vision-container {
         grid-template-columns: 1fr;
-        gap: 3rem;
-    }
-
-    .about-right {
-        order: -1;
+        gap: 2rem;
+        margin: 2.5rem auto;
     }
 
     .hero-banner-container {
@@ -1185,16 +1215,18 @@ body {
         font-size: 0.9rem;
     }
 
-    .brand-profile {
-        padding: 1.5rem;
+    .brand-profile-intro {
+        margin-bottom: 2.5rem;
+        padding: 0 1rem;
     }
 
     .brand-profile-title {
-        font-size: 1.6rem;
+        font-size: 2rem;
     }
 
     .brand-profile-text {
-        font-size: 0.95rem;
+        font-size: 1rem;
+        line-height: 1.8;
     }
 
     .services-grid {
@@ -1309,17 +1341,18 @@ body {
         font-size: 1.5rem;
     }
 
-    .brand-profile {
-        padding: 1.2rem;
-        margin-bottom: 1.5rem;
+    .brand-profile-intro {
+        margin-bottom: 2rem;
+        padding: 0 0.5rem;
     }
 
     .brand-profile-title {
-        font-size: 1.4rem;
+        font-size: 1.8rem;
     }
 
     .brand-profile-text {
-        font-size: 0.9rem;
+        font-size: 0.95rem;
+        line-height: 1.7;
     }
     
     .stats-section .section-title {
@@ -1332,15 +1365,17 @@ body {
         text-shadow: 0 1px 3px rgba(0,0,0,0.3);
     }
     
-    .process-grid {
+    .process-content-wrapper {
         grid-template-columns: 1fr;
-        gap: 2rem;
+        gap: 2.5rem;
     }
     
-    .process-item {
-        flex-direction: column;
-        text-align: center;
-        gap: 1rem;
+    .process-title {
+        font-size: 1.3rem;
+    }
+    
+    .process-text {
+        font-size: 0.95rem;
     }
     
     .benefits-grid {
@@ -1357,9 +1392,6 @@ body {
         padding: 1.5rem 1rem;
     }
     
-    .integration-logo {
-        font-size: 2.5rem;
-    }
     
     .hero-main-phrase {
         font-size: 1.8rem;
@@ -1369,13 +1401,17 @@ body {
         font-size: 1.1rem;
     }
     
-    .about-grid {
-        grid-template-columns: 1fr;
-        gap: 2rem;
+    .mission-vision-container {
+        gap: 1.5rem;
+        margin: 2rem auto;
     }
     
-    .about-card {
-        padding: 2rem;
+    .mission-vision-title {
+        font-size: 1.3rem;
+    }
+    
+    .mission-vision-text {
+        font-size: 0.95rem;
     }
     
     .values-grid {
