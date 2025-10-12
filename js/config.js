@@ -9,7 +9,7 @@ const BACKEND_CONFIG = {
     
     // PRODUCCIÓN: Backend en Render/Railway/etc
     // 🔧 ACTUALIZA ESTA URL cuando despliegues en Render
-    production: 'https://tu-backend-en-produccion.com',
+    production: 'http://localhost:3000',
     
     // Alternativa: Si quieres probar con otro backend
     // production: 'https://paqueteria24-backend.onrender.com',

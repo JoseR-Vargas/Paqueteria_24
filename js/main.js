@@ -176,7 +176,7 @@ async function sendToBackend(data) {
 		
 		const backendUrl = isLocalDev
 			? 'http://localhost:3000' 
-			: 'https://tu-backend-en-produccion.com';
+			: 'http://localhost:3000';
 		
 		console.log('🔍 Hostname detectado:', window.location.hostname);
 		console.log('🔍 Protocol detectado:', window.location.protocol);
