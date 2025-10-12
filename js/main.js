@@ -91,20 +91,41 @@ contactForm.addEventListener('submit', (e) => {
     }
     
     // Guardar en localStorage
-    saveContact(data);
+    const saved = saveContact(data);
     
-    // Si todo está bien, mostrar mensaje de éxito
-    showSuccess('¡Formulario enviado correctamente! Nos pondremos en contacto contigo pronto.');
-    contactForm.reset();
-    charCount.textContent = '0';
-    charCount.style.color = '#047BA4';
+    if (saved) {
+        // Enviar al backend
+        sendToBackend(data);
+    } else {
+        // Si hubo error al guardar, mostrar mensaje de error
+        showError('Hubo un problema al guardar los datos. Por favor, inténtalo de nuevo.');
+    }
 });
 
 // Función para guardar contacto en localStorage (DRY)
 function saveContact(data) {
-    const contacts = JSON.parse(localStorage.getItem('paqueteria24_contacts') || '[]');
-    contacts.push(data);
-    localStorage.setItem('paqueteria24_contacts', JSON.stringify(contacts));
+    try {
+        // Obtener contactos existentes
+        const existingContacts = localStorage.getItem('paqueteria24_contacts');
+        const contacts = existingContacts ? JSON.parse(existingContacts) : [];
+        
+        // Agregar nuevo contacto
+        contacts.push(data);
+        
+        // Guardar en localStorage
+        localStorage.setItem('paqueteria24_contacts', JSON.stringify(contacts));
+        
+        // Log para verificar que se guardó correctamente
+        console.log('✅ Contacto guardado exitosamente en localStorage:', data);
+        console.log('📊 Total de contactos guardados:', contacts.length);
+        console.log('💾 Datos completos en localStorage:', contacts);
+        
+        return true;
+    } catch (error) {
+        console.error('❌ Error al guardar contacto en localStorage:', error);
+        console.error('📝 Datos que se intentaron guardar:', data);
+        return false;
+    }
 }
 
 // Función para validar email
@@ -112,6 +133,110 @@ function isValidEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
 }
+
+// Función para verificar datos guardados en localStorage (útil para debugging)
+function checkStoredContacts() {
+    try {
+        const stored = localStorage.getItem('paqueteria24_contacts');
+        if (stored) {
+            const contacts = JSON.parse(stored);
+            console.log('🔍 Contactos almacenados en localStorage:', contacts);
+            console.log('📈 Cantidad total de contactos:', contacts.length);
+            return contacts;
+        } else {
+            console.log('📭 No hay contactos almacenados en localStorage');
+            return [];
+        }
+    } catch (error) {
+        console.error('❌ Error al leer contactos de localStorage:', error);
+        return [];
+    }
+}
+
+// Función de utilidad para limpiar localStorage (útil para testing)
+function clearStoredContacts() {
+    try {
+        localStorage.removeItem('paqueteria24_contacts');
+        console.log('🗑️ Contactos eliminados de localStorage');
+        return true;
+    } catch (error) {
+        console.error('❌ Error al limpiar localStorage:', error);
+        return false;
+    }
+}
+
+// Función para enviar datos al backend
+async function sendToBackend(data) {
+	try {
+		// Detectar si estamos en desarrollo local
+		const isLocalDev = window.location.hostname === 'localhost' 
+			|| window.location.hostname === '127.0.0.1'
+			|| window.location.protocol === 'file:'
+			|| window.location.hostname === '';
+		
+		const backendUrl = isLocalDev
+			? 'http://localhost:3000' 
+			: 'https://tu-backend-en-produccion.com';
+		
+		console.log('🔍 Hostname detectado:', window.location.hostname);
+		console.log('🔍 Protocol detectado:', window.location.protocol);
+		console.log('🎯 Backend URL elegida:', backendUrl);
+		console.log('📤 Enviando datos al backend:', data);
+		
+		const response = await fetch(`${backendUrl}/form`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(data)
+		});
+		
+		if (response.ok) {
+			const result = await response.json();
+			console.log('✅ Datos enviados exitosamente al backend:', result);
+			
+			// Mostrar mensaje basado en la respuesta del backend
+			if (result.success) {
+				showSuccess(result.message || '¡Formulario enviado correctamente! Nos pondremos en contacto contigo pronto.');
+			} else {
+				showError('Error en el servidor. Los datos se guardaron localmente.');
+			}
+			
+			contactForm.reset();
+			charCount.textContent = '0';
+			charCount.style.color = '#047BA4';
+		} else {
+			// Intentar obtener el error del backend
+			let errorMessage = 'Error del servidor';
+			try {
+				const errorData = await response.json();
+				errorMessage = errorData.message || `Error del servidor: ${response.status}`;
+			} catch (e) {
+				errorMessage = `Error del servidor: ${response.status}`;
+			}
+			
+			throw new Error(errorMessage);
+		}
+	} catch (error) {
+		console.error('❌ Error al enviar al backend:', error);
+		
+		// Mostrar error específico si está disponible
+		const errorMsg = error.message.includes('fetch') 
+			? 'No se pudo conectar con el servidor. Los datos se guardaron localmente.'
+			: `Error: ${error.message}. Los datos se guardaron localmente.`;
+			
+		showError(errorMsg);
+		
+		// Resetear formulario aunque haya error en el backend
+		contactForm.reset();
+		charCount.textContent = '0';
+		charCount.style.color = '#047BA4';
+	}
+}
+
+// Hacer funciones disponibles globalmente para debugging
+window.checkStoredContacts = checkStoredContacts;
+window.clearStoredContacts = clearStoredContacts;
 
 // Función para mostrar errores
 function showError(message) {
@@ -228,7 +353,7 @@ whatsappBtn.addEventListener('click', () => {
     whatsappMessage += `\n¡Espero su respuesta!`;
     
     // Número de WhatsApp (formato internacional)
-    const phoneNumber = '59899783238'; // Uruguay +598, sin el 0 inicial
+    const phoneNumber = '59897948978'; // Uruguay +598, sin el 0 inicial
     
     // Crear URL de WhatsApp
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(whatsappMessage)}`;
@@ -396,6 +521,10 @@ window.addEventListener('load', () => {
         initializeAnimateElements();
     }
     animateOnScroll();
+    
+    // Verificar contactos existentes en localStorage al cargar la página
+    console.log('🚀 Página cargada - Verificando contactos en localStorage...');
+    checkStoredContacts();
 });
 
 // Optimización de imágenes con lazy loading mejorado
