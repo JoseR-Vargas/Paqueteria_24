@@ -79,19 +79,12 @@ class Dashboard {
 
     // Cargar datos desde backend
     async loadFromBackend() {
-        // Detectar si estamos en desarrollo local
-        const isLocalDev = window.location.hostname === 'localhost' 
-            || window.location.hostname === '127.0.0.1'
-            || window.location.protocol === 'file:'
-            || window.location.hostname === '';
-            
-        const backendUrl = isLocalDev
-            ? 'http://localhost:3000' 
-            : 'https://tu-backend-en-produccion.com';
+        // Usar configuración centralizada
+        const backendUrl = window.PAQUETERIA24_CONFIG 
+            ? window.PAQUETERIA24_CONFIG.backendUrl 
+            : 'http://localhost:3000';
         
-        console.log('🔍 Dashboard - Hostname detectado:', window.location.hostname);
-        console.log('🔍 Dashboard - Protocol detectado:', window.location.protocol);
-        console.log('🎯 Dashboard - Backend URL elegida:', backendUrl);
+        console.log('🎯 Dashboard - Intentando conectar a:', backendUrl);
         
         const response = await fetch(`${backendUrl}/form`);
         
