@@ -51,30 +51,18 @@ class Dashboard {
         this.attachEventListeners();
     }
 
-    // Cargar contactos desde backend y localStorage
+    // Cargar contactos desde backend
     async loadContacts() {
         try {
-            // Intentar cargar desde backend primero
+            // Intentar cargar desde backend
             const backendData = await this.loadFromBackend();
-            if (backendData && backendData.length > 0) {
-                console.log('✅ Datos cargados desde backend:', backendData);
-                return backendData;
-            }
+            console.log('✅ Datos cargados desde backend:', backendData);
+            return backendData || [];
         } catch (error) {
-            console.warn('⚠️ Error al cargar desde backend, usando localStorage:', error);
+            console.error('❌ Error al cargar desde backend:', error);
+            this.showNotification('❌ Error al conectar con el servidor', 'error');
+            return [];
         }
-        
-        // Fallback a localStorage
-        const data = localStorage.getItem('paqueteria24_contacts');
-        
-        // Si no hay datos, cargar datos de ejemplo (mock)
-        if (!data || JSON.parse(data).length === 0) {
-            const mockData = this.getMockData();
-            localStorage.setItem('paqueteria24_contacts', JSON.stringify(mockData));
-            return mockData;
-        }
-        
-        return JSON.parse(data);
     }
 
     // Cargar datos desde backend
@@ -100,84 +88,6 @@ class Dashboard {
         } else {
             throw new Error('Formato de respuesta inválido del backend');
         }
-    }
-
-    // Datos de ejemplo para demostración
-    getMockData() {
-        return [
-            {
-                nombre: "Tienda El Sol",
-                cedula: "218765432",
-                telefono: "099876543",
-                email: "contacto@elsol.com",
-                paqueteria: ["mercado-libre", "ecommerce"],
-                comentario: "Necesito información sobre tarifas para envíos nacionales. Tengo un volumen de aproximadamente 50 paquetes semanales.",
-                fecha: new Date('2024-10-01T10:30:00').toISOString()
-            },
-            {
-                nombre: "Juan Pérez",
-                cedula: "512345678",
-                telefono: "098765432",
-                email: "juan.perez@gmail.com",
-                paqueteria: ["privado"],
-                comentario: "Quiero enviar un paquete urgente a Punta del Este. ¿Cuánto demora?",
-                fecha: new Date('2024-10-02T14:20:00').toISOString()
-            },
-            {
-                nombre: "Moda Bella SA",
-                cedula: "219876543",
-                telefono: "099123456",
-                email: "ventas@modabella.com.uy",
-                paqueteria: ["mercado-libre"],
-                comentario: "Somos vendedores de Mercado Libre y buscamos integración automática para nuestros envíos.",
-                fecha: new Date('2024-10-03T09:15:00').toISOString()
-            },
-            {
-                nombre: "María Rodríguez",
-                cedula: "487654321",
-                telefono: "095432198",
-                email: "maria.r@hotmail.com",
-                paqueteria: ["ecommerce"],
-                comentario: "Tengo una tienda online y necesito un servicio confiable de entregas. ¿Ofrecen seguimiento en tiempo real?",
-                fecha: new Date('2024-10-03T16:45:00').toISOString()
-            },
-            {
-                nombre: "Distribuidora Norte",
-                cedula: "217890123",
-                telefono: "099234567",
-                email: "logistica@disnorte.com",
-                paqueteria: ["mercado-libre", "ecommerce", "privado"],
-                comentario: "Buscamos un partner logístico para manejar toda nuestra operación de envíos. Volumen alto.",
-                fecha: new Date('2024-10-04T11:00:00').toISOString()
-            },
-            {
-                nombre: "Carlos Méndez",
-                cedula: "398765432",
-                telefono: "092345678",
-                email: "carlos.mendez@outlook.com",
-                paqueteria: [],
-                comentario: "Consulta sobre costos de envío para paquetes pequeños dentro de Montevideo.",
-                fecha: new Date('2024-10-04T08:30:00').toISOString()
-            },
-            {
-                nombre: "TechStore Uruguay",
-                cedula: "216543210",
-                telefono: "099887766",
-                email: "info@techstore.uy",
-                paqueteria: ["ecommerce"],
-                comentario: "Vendemos electrónicos online. Necesitamos garantías sobre el manejo cuidadoso de productos frágiles.",
-                fecha: new Date('2024-10-04T13:15:00').toISOString()
-            },
-            {
-                nombre: "Ana Silva",
-                cedula: "543210987",
-                telefono: "091234567",
-                email: "ana.silva@gmail.com",
-                paqueteria: ["privado"],
-                comentario: "Necesito enviar documentos importantes a Colonia. ¿Tienen servicio express?",
-                fecha: new Date('2024-10-04T15:45:00').toISOString()
-            }
-        ];
     }
 
     // Renderizar contactos en la tabla
@@ -214,6 +124,7 @@ class Dashboard {
 
     // Crear fila de tabla (DRY)
     createTableRow(contact) {
+        const contactId = contact._id || contact.id;
         return `
             <tr>
                 <td>${this.escapeHtml(contact.nombre)}</td>
@@ -223,6 +134,11 @@ class Dashboard {
                 <td>${this.renderBadges(contact.paqueteria)}</td>
                 <td>${this.escapeHtml(contact.comentario)}</td>
                 <td>${this.formatDate(contact.fecha)}</td>
+                <td>
+                    <div class="action-buttons">
+                        <button class="btn-delete" onclick="dashboard.deleteContact('${contactId}')">🗑️ Eliminar</button>
+                    </div>
+                </td>
             </tr>
         `;
     }
@@ -425,22 +341,66 @@ class Dashboard {
         }
     }
 
-    // Limpiar todos los datos y recargar datos de ejemplo
+    // Limpiar todos los datos
     clearData() {
-        if (confirm('¿Estás seguro de limpiar todos los datos? Se cargarán nuevamente los datos de ejemplo.')) {
-            localStorage.removeItem('paqueteria24_contacts');
-            this.init(); // Reinicializar completamente
-            
+        if (confirm('¿Estás seguro de limpiar todos los datos? Esto recargará las consultas desde el servidor.')) {
             // Resetear filtros
-            document.getElementById('search-input').value = '';
-            document.getElementById('filter-type').value = 'all';
+            const searchInput = document.getElementById('search-input');
+            const filterType = document.getElementById('filter-type');
             
-            this.showNotification('✅ Datos limpiados. Se cargaron nuevamente los datos de ejemplo.', 'success');
+            if (searchInput) searchInput.value = '';
+            if (filterType) filterType.value = 'all';
+            
+            this.init(); // Reinicializar completamente
+            this.showNotification('✅ Datos recargados desde el servidor.', 'success');
+        }
+    }
+
+    // Eliminar un contacto específico
+    async deleteContact(contactId) {
+        if (!confirm('¿Estás seguro de eliminar esta consulta? Esta acción no se puede deshacer.')) {
+            return;
+        }
+
+        try {
+            // Usar configuración centralizada
+            const backendUrl = window.PAQUETERIA24_CONFIG 
+                ? window.PAQUETERIA24_CONFIG.backendUrl 
+                : 'http://localhost:3000';
+            
+            console.log('🗑️ Eliminando contacto:', contactId);
+
+            const response = await fetch(`${backendUrl}/form/${contactId}`, {
+                method: 'DELETE'
+            });
+
+            if (!response.ok) {
+                throw new Error(`Error del servidor: ${response.status}`);
+            }
+
+            const result = await response.json();
+
+            if (result.success) {
+                this.showNotification('✅ Consulta eliminada exitosamente', 'success');
+                
+                // Recargar los contactos
+                this.contacts = await this.loadContacts();
+                this.filteredContacts = [...this.contacts];
+                this.renderContacts();
+            } else {
+                throw new Error('Error al eliminar el contacto');
+            }
+        } catch (error) {
+            console.error('❌ Error al eliminar contacto:', error);
+            this.showNotification('❌ Error al eliminar la consulta. Intenta nuevamente.', 'error');
         }
     }
 }
 
+// Variable global para acceder al dashboard desde onclick
+let dashboard;
+
 // Inicializar Dashboard cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', () => {
-    new Dashboard();
+    dashboard = new Dashboard();
 });

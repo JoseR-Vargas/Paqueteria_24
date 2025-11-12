@@ -256,10 +256,37 @@ function showError(message) {
         margin: 1rem 0;
         text-align: center;
         font-weight: 500;
+        animation: slideDown 0.3s ease-out;
     `;
+    
+    // Agregar animación si no existe
+    if (!document.querySelector('#error-message-styles')) {
+        const style = document.createElement('style');
+        style.id = 'error-message-styles';
+        style.textContent = `
+            @keyframes slideDown {
+                from { opacity: 0; transform: translateY(-10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+    
     errorDiv.textContent = message;
     
-    contactForm.insertBefore(errorDiv, contactForm.firstChild);
+    // Insertar después de los botones del formulario
+    const formButtons = contactForm.querySelector('.form-buttons');
+    if (formButtons) {
+        formButtons.insertAdjacentElement('afterend', errorDiv);
+        
+        // Hacer scroll suave al mensaje
+        setTimeout(() => {
+            errorDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }, 100);
+    } else {
+        // Fallback: insertar al principio del formulario
+        contactForm.insertBefore(errorDiv, contactForm.firstChild);
+    }
     
     // Remover mensaje después de 5 segundos
     setTimeout(() => {
@@ -287,10 +314,37 @@ function showSuccess(message) {
         margin: 1rem 0;
         text-align: center;
         font-weight: 500;
+        animation: slideDown 0.3s ease-out;
     `;
+    
+    // Agregar animación
+    if (!document.querySelector('#success-message-styles')) {
+        const style = document.createElement('style');
+        style.id = 'success-message-styles';
+        style.textContent = `
+            @keyframes slideDown {
+                from { opacity: 0; transform: translateY(-10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+    
     successDiv.textContent = message;
     
-    contactForm.insertBefore(successDiv, contactForm.firstChild);
+    // Insertar después de los botones del formulario
+    const formButtons = contactForm.querySelector('.form-buttons');
+    if (formButtons) {
+        formButtons.insertAdjacentElement('afterend', successDiv);
+        
+        // Hacer scroll suave al mensaje
+        setTimeout(() => {
+            successDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }, 100);
+    } else {
+        // Fallback: insertar al final del formulario
+        contactForm.appendChild(successDiv);
+    }
     
     // Remover mensaje después de 5 segundos
     setTimeout(() => {
